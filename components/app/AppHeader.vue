@@ -1,14 +1,27 @@
 <template>
-  <div class="fixed w-full top-0 z-40 border-b bg-white">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center h-16">
-        <div class="lg:w-1/5 flex items-center pr-4">
-          <NuxtLink to="/" class="flex-shrink-0">
-            <!-- <img src="/logo.png" alt="logo" /> -->
-            <span class="tracking-widest text-3xl italic">Journey</span>
-          </NuxtLink>
+  <div class="bg-black text-gray-300 px-4 md:px-0">
+    <div class="container mx-auto">
+      <div class="self-container overflow-hidden">
+        <div class="flex justify-between items-center">
+          <div class="h-16 flex space-x-4 items-center text-base">
+            <div>Home</div>
+            <div>Posts</div>
+          </div>
+
+          <div class="flex space-x-6 text-sm">
+            <div>QQ</div>
+            <div>Wechat</div>
+            <div>皮肤模式</div>
+          </div>
         </div>
-        <div class="flex-grow"></div>
+
+        <div class="my-28 flex flex-col items-center font-light">
+          <AppLogo />
+
+          <p class="text-2xl mt-4 text-gray-400 tracking-widest">
+            defualt stroy and somethidn interseting
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -19,10 +32,5 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'AppHeader',
-  data() {
-    return {
-      scrolled: false,
-    }
-  },
 })
 </script>

@@ -1,10 +1,12 @@
 <template>
-  <div class="pt-16">
+  <div class="app-container">
     <AppHeader />
 
-    <main>
-      <nuxt-content></nuxt-content>
-    </main>
+    <div class="self-container">
+      <Nuxt />
+    </div>
+
+    <AppFooter />
   </div>
 </template>
 
@@ -22,11 +24,7 @@ export default Vue.extend({
 
         return 'my blog'
       },
-      bodyAttrs: {
-        class: ['text-gray-700 leading-normal bg-white'],
-      },
       meta: [
-        // 微信分享的显示
         { hid: 'og:site_name', property: 'og:site_name', content: 'my blog' },
         { hid: 'og:type', property: 'og:type', content: 'website' },
         {

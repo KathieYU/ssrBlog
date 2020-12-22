@@ -1,0 +1,13 @@
+.self-container {
+  margin: 0 auto;
+  max-width: 1040px;
+  width: 100%;
+}
+
+.description-color {
+  color: #738a94;
+}
+
+.tag-color {
+  color: #3eb0ef;
+}
