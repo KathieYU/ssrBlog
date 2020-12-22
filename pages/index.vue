@@ -20,8 +20,7 @@
 import Vue from 'vue'
 import { IContentDocument } from '@nuxt/content/types/content'
 
-// type NuxtContentFetchType = Promise<IContentDocument | Array<IContentDocument>>
-const articleDirs = ['top', 'node']
+const articleDirs = ['top']
 
 export default Vue.extend({
   async asyncData({ $content }) {

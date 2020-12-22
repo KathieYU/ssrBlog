@@ -6,3 +6,21 @@ tag: webpack
 ---
 
 # 第一篇置顶帖
+
+```jsx[test.js]
+{
+  body: Object
+  excerpt: Object
+  title: "Introduction"
+  description: "Learn how to use @nuxt/content."
+  dir: "/"
+  extension: ".md"
+  path: "/index"
+  slug: "index"
+  toc: Array
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+```
+
+<div class=" text-blue-300">hello world</div>
