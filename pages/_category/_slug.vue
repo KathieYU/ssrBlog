@@ -1,10 +1,18 @@
 <template>
-  <div class="px-4 lg:px-0 mt-4 article-detial-info">
-    <ArticleItemInfo :article="detail" />
-
-    <div class="mt-16 mb-32 prose">
-      <nuxt-content :document="detail"></nuxt-content>
+  <div class="flex flex-wrap-reverse">
+    <div class="w-full py-4 lg:pt-8 lg:pb-4 lg:w-3/4 dark:border-gray-800">
+      <article class="prose dark:prose-dark max-w-none lg:px-8">
+        <h1 class="flex items-center justify-between">
+          {{ document.title }}
+          <Badge v-if="document.badge">{{ document.badge }}</Badge>
+        </h1>
+        <div class="mt-4">
+          <NuxtContent :document="document" />
+        </div>
+      </article>
     </div>
+
+    <AppToc :toc="document.toc" />
   </div>
 </template>
 
@@ -15,12 +23,10 @@ export default Vue.extend({
   name: 'PostDetail',
   async asyncData({ $content, params }) {
     const { category, slug } = params
-    const detailContent = await $content(category, slug).fetch()
-
-    console.log(detailContent)
+    const document = await $content(category, slug).fetch()
 
     return {
-      detail: detailContent,
+      document,
     }
   },
 })

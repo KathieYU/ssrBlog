@@ -1,9 +1,11 @@
 <template>
-  <div class="app-container">
+  <div class="app-container dark:bg-bgdark">
     <AppHeader />
 
-    <div class="self-container">
-      <Nuxt />
+    <div class="container mx-auto px-4">
+      <div class="self-container">
+        <Nuxt />
+      </div>
     </div>
 
     <AppFooter />

@@ -5,12 +5,12 @@
     :class="gridCols"
   >
     <div
-      class="overflow-hidden rounded border"
+      class="overflow-hidden rounded"
       :class="{ 'col-span-2': mode === 'horizen' }"
     >
       <img
         v-if="mode === 'horizen'"
-        class="w-full h-auto"
+        class="h-72 lg:h-96 w-full object-cover"
         :src="article.image"
         alt=""
       />

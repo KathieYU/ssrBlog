@@ -1,6 +1,8 @@
 <template>
-  <div class="aritlce-list pt-6 divide-y pb-20 px-4 lg:px-0">
-    <div class="pb-8">
+  <div
+    class="aritlce-list pt-6 pb-20 lg:px-0 divide-gray-200 dark:divide-gray-700 md:divide-y"
+  >
+    <div class="pb-8 hidden md:block">
       <ArticleItem :article="top" />
     </div>
     <div

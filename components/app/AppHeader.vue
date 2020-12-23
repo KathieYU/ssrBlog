@@ -11,7 +11,7 @@
           <div class="flex space-x-6 text-sm">
             <div>QQ</div>
             <div>Wechat</div>
-            <div>皮肤模式</div>
+            <AppColorSwitch />
           </div>
         </div>
 
@@ -19,7 +19,7 @@
           <AppLogo />
 
           <p class="text-2xl mt-4 text-gray-400 tracking-widest">
-            defualt stroy and somethidn interseting
+            一个会修电器的IT程序员
           </p>
         </div>
       </div>
