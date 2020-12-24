@@ -1,6 +1,24 @@
 <template>
   <div class="app-container dark:bg-bgdark">
-    <AppHeader />
+    <AppNav />
+
+    <AppNav
+      :show-logo="true"
+      class="fixed top-0 w-full transition-all opacity-0 transform duration-100"
+      :class="{
+        'opacity-100': showNav,
+        'translate-y-0': showNav,
+        '-translate-y-full': !showNav,
+      }"
+    />
+
+    <div class="py-28 flex flex-col items-center font-light bg-black">
+      <AppLogo />
+
+      <p class="text-2xl mt-4 text-gray-400 tracking-widest">
+        一个会修电器的IT程序员
+      </p>
+    </div>
 
     <div class="container mx-auto px-4">
       <div class="self-container">
@@ -17,6 +35,26 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'Layout',
+  data() {
+    return {
+      showNav: false,
+    }
+  },
+  beforeMount() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
+  methods: {
+    handleScroll() {
+      if (window.scrollY >= 380) {
+        this.showNav = true
+      } else {
+        this.showNav = false
+      }
+    },
+  },
   head() {
     return {
       titleTemplate: (chunk) => {

@@ -4,23 +4,16 @@
       <div class="self-container overflow-hidden">
         <div class="flex justify-between items-center">
           <div class="h-16 flex space-x-4 items-center text-base">
-            <div>Home</div>
-            <div>Posts</div>
+            <AppLogo v-if="showLogo" class="mr-8 -mt-1" size="small" />
+            <NuxtLink class="text-hover-transition" to="/">Home</NuxtLink>
+            <NuxtLink class="text-hover-transition" to="/about">About</NuxtLink>
           </div>
 
           <div class="flex space-x-6 text-sm">
-            <div>QQ</div>
-            <div>Wechat</div>
+            <div class="text-hover-transition">QQ</div>
+            <div class="text-hover-transition">Wechat</div>
             <AppColorSwitch />
           </div>
-        </div>
-
-        <div class="my-28 flex flex-col items-center font-light">
-          <AppLogo />
-
-          <p class="text-2xl mt-4 text-gray-400 tracking-widest">
-            一个会修电器的IT程序员
-          </p>
         </div>
       </div>
     </div>
@@ -28,9 +21,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { PropOptions } from 'vue'
 
 export default Vue.extend({
-  name: 'AppHeader',
+  props: {
+    showLogo: {
+      type: Boolean,
+      default: false,
+    } as PropOptions<boolean>,
+  },
 })
 </script>

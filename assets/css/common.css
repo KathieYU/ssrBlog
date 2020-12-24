@@ -4,6 +4,10 @@
   width: 100%;
 }
 
+.text-hover-transition {
+  @apply hover:text-primary-500 transition ease-in-out duration-150 cursor-pointer
+}
+
 .nuxt-content {
   @apply break-words;
 
@@ -24,7 +28,7 @@
 
       &::before {
         content: "#";
-        @apply text-blue-400 font-normal text-xl leading-8 -ml-5 pr-2 absolute opacity-100;
+        @apply text-primary-500 font-normal text-xl leading-8 -ml-5 pr-2 absolute opacity-100;
       }
 
       @screen lg {

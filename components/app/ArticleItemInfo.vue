@@ -1,6 +1,6 @@
 <template>
   <div class="pt-2">
-    <div class="text-sm text-blue-400 dark:text-blue-300">
+    <div class="text-sm text-primary-400 dark:text-primary-300">
       {{ article.tag }}
     </div>
     <div class="text-black text-2xl font-bold mt-2 mb-4 dark:text-white">

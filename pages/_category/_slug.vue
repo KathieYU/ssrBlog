@@ -20,6 +20,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
+  layout: 'single',
   name: 'PostDetail',
   async asyncData({ $content, params }) {
     const { category, slug } = params
