@@ -24,18 +24,27 @@ export default Vue.extend({
           return `${chunk}`
         }
 
-        return 'my blog'
+        return 'Journey’s Blog'
       },
       meta: [
-        { hid: 'og:site_name', property: 'og:site_name', content: 'my blog' },
-        { hid: 'og:type', property: 'og:type', content: 'website' },
+        {
+          hid: 'og:site_name',
+          property: 'og:site_name',
+          content: 'Journey前端技术博客',
+        },
+        { hid: 'og:type', property: 'og:type', content: 'article' },
         {
           hid: 'og:description',
           property: 'og:description',
-          content: 'this is description',
+          content:
+            '全栈技术分享博客，Web前端技术 && Nodejs全栈，每周定时分享一些技术干货',
         },
-        { hid: 'og:url', property: 'og:url', content: '' },
-        { hid: 'og:image', property: 'og:image', content: '/favicon.ico' },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `http://ssr-blog.journeynes.com`,
+        },
+        { hid: 'og:image', property: 'og:image', content: '/journey.png' },
       ],
     }
   },

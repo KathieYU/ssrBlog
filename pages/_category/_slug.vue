@@ -18,6 +18,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import AppCopyButton from '@/components/app/AppCopyButton.vue'
+import { IContentDocument } from '@nuxt/content/types/content'
 
 export default Vue.extend({
   layout: 'single',
@@ -28,6 +30,43 @@ export default Vue.extend({
 
     return {
       document,
+    }
+  },
+  data() {
+    return {
+      document: {} as IContentDocument,
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      const blocks = document.getElementsByClassName('nuxt-content-highlight')
+
+      for (let i = 0; i < blocks.length; i++) {
+        const block = blocks[i]
+        const CopyButton = Vue.extend(AppCopyButton)
+        const component = new CopyButton().$mount()
+        block.appendChild(component.$el)
+      }
+    }, 100)
+  },
+  head() {
+    const { title, description } = this.document as any
+    return {
+      title,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: description,
+        },
+        // Open Graph
+        { hid: 'og:title', property: 'og:title', content: title },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: description,
+        },
+      ],
     }
   },
 })
