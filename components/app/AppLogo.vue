@@ -18,11 +18,12 @@ export default Vue.extend({
   },
   computed: {
     imageSizeClass() {
-      const size = this.size === 'small' ? 7 : 11
+      const w = this.size === 'small' ? 'w-7' : 'w-11'
+      const h = this.size === 'small' ? 'w-7' : 'w-11'
 
       return {
-        [`w-${size}`]: true,
-        [`h-${size}`]: true,
+        [w]: true,
+        [h]: true,
       }
     },
     pSizeClass() {
