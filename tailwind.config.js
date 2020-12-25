@@ -5,7 +5,6 @@ const colors = require('tailwindcss/colors')
 
 module.exports = {
   purge: {
-    mode: 'all',
     enabled: process.env.NODE_ENV === 'production',
     content: [
       'content/**/*.md',
