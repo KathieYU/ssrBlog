@@ -58,8 +58,4 @@ Then, add `@nuxtjs/xxx` to the `modules` section of `nuxt.config.js`:
 }
 ```
 
-## 注意的点
-
-## 注意的点
-
-## 注意的点
+## 跟新查看git action是否成功
