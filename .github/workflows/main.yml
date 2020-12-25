@@ -43,4 +43,11 @@ jobs:
       
       # deploy project
       - name: Deploy Project
-        uses: contention/action-rsync-deploy@master
+        uses: up9cloud/action-rsync@master
+        env:
+          HOST: journeynes.com
+          KEY: ${{secrets.DEPLOY_SSH_KEY}}
+          TARGET: /home/node/ssr-blog
+          SOURCE: ./dist
+          key:   
+        
