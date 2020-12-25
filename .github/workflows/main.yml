@@ -45,8 +45,8 @@ jobs:
       - name: Deploy Project
         uses: up9cloud/action-rsync@master
         env:
-          HOST: journeynes.com
+          HOST: 47.98.109.43
           KEY: ${{secrets.DEPLOY_SSH_KEY}}
-          TARGET: /home/node/ssr-blog
-          SOURCE: ./dist
+          TARGET: /home/node/ssr-blog/
+          SOURCE: ./dist/
         
