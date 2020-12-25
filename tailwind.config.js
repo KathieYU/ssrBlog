@@ -13,6 +13,7 @@ module.exports = {
       path.join(__dirname, 'layouts/**/*.vue'),
       path.join(__dirname, 'pages/**/*.vue'),
       path.join(__dirname, 'plugins/**/*.js'),
+      'nuxt.config.js',
     ],
     options: {
       whitelist: ['dark-mode'],
