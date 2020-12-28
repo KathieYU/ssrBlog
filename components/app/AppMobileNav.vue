@@ -1,8 +1,7 @@
 <template>
-  <div class="fixed inset-0 z-20 top-16 md:hidden">
-    <div v-if="isOpen" class="absolute inset-0 z-10 bg-transparent"></div>
+  <div v-if="isOpen" class="fixed inset-0 z-20 top-16 md:hidden">
+    <div class="absolute inset-0 z-10 bg-transparent"></div>
     <div
-      v-if="isOpen"
       ref="mobileNav"
       class="absolute inset-x-0 top-0 bg-black z-20 py-4 md:hidden"
     >

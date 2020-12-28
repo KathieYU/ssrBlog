@@ -4,9 +4,7 @@
       <div class="flex justify-between text-sm">
         <div>Journey © {{ new Date().getFullYear() }}</div>
         <div class="divide-x flex space-x-2 leading-none items-center">
-          <span>journey</span>
-          <span class="pl-3">node</span>
-          <span class="pl-3">webapck</span>
+          <span>QQ群：598898575</span>
         </div>
       </div>
     </div>
