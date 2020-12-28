@@ -10,8 +10,8 @@
       "
     >
       <client-only>
-        <IconSun v-if="$colorMode.value === 'light'" class="w-6 h-6" />
-        <IconMoon v-else class="w-6 h-6" />
+        <IconSun v-if="$colorMode.value === 'light'" class="w-7 h-7" />
+        <IconMoon v-else class="w-7 h-7" />
       </client-only>
     </button>
   </span>

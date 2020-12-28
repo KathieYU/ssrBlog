@@ -18,8 +18,8 @@ export default Vue.extend({
   },
   computed: {
     imageSizeClass() {
-      const w = this.size === 'small' ? 'w-7' : 'w-11'
-      const h = this.size === 'small' ? 'w-7' : 'w-11'
+      const w = this.size === 'small' ? 'w-8' : 'w-11'
+      const h = this.size === 'small' ? 'w-8' : 'w-11'
 
       return {
         [w]: true,
@@ -27,13 +27,12 @@ export default Vue.extend({
       }
     },
     pSizeClass() {
-      const ml = this.size === 'small' ? 'ml-1' : 'ml-4'
-      const fontSize = this.size === 'small' ? 'text-2xl' : 'text-4xl'
+      const fontSize = this.size === 'small' ? 'text-3xl' : 'text-4xl'
       const tracking =
         this.size === 'small' ? 'tracking-normal' : 'tracking-widest'
 
       return {
-        [ml]: true,
+        'ml-4': true,
         [fontSize]: true,
         [tracking]: true,
         'text-white': true,

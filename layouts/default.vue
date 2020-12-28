@@ -1,10 +1,10 @@
 <template>
   <div class="app-container dark:bg-bgdark">
-    <AppNav />
+    <AppNav class="fixed md:static top-0 w-full z-30" />
 
     <AppNav
       :show-logo="true"
-      class="fixed top-0 w-full transition-all opacity-0 transform duration-100"
+      class="hidden md:fixed top-0 w-full transition-all opacity-0 transform duration-100"
       :class="{
         'opacity-100': showNav,
         'translate-y-0': showNav,
@@ -25,6 +25,8 @@
         <Nuxt />
       </div>
     </div>
+
+    <AppMobileNav />
 
     <AppFooter />
   </div>

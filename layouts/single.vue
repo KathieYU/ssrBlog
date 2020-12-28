@@ -1,12 +1,14 @@
 <template>
   <div class="app-container dark:bg-bgdark">
-    <AppNav :show-logo="true" class="fixed top-0 w-full z-10" />
+    <AppNav :show-logo="true" class="fixed top-0 w-full z-30" />
 
     <div class="container mx-auto px-4 pt-16">
       <div class="self-container">
         <Nuxt />
       </div>
     </div>
+
+    <AppMobileNav />
 
     <AppFooter />
   </div>
