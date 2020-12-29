@@ -28,8 +28,6 @@ export default Vue.extend({
     const { category, slug } = params
     const document = await $content(category, slug).fetch()
 
-    console.log(document)
-
     return {
       document,
     }

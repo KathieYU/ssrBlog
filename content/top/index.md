@@ -31,17 +31,17 @@ Mock？？我去查查看
 
 - 减少额外工作，在没有Mock接口的时候我们模拟数据的方式很烦躁（见下方），比如list列表，需要在data中声明list，去调试内容，或者引入一个JSON，导致在联调调用接口的部分代码没有写，联调成功的时候要删除很多无用代码 <span class="font-bold">---></span> 通过Mock在联调的时候只需把Mock接口的地址换成真是地址即可
 
-    ```js[list.vue]
-    import { listData } from 'mock/list.js'
+```js[list.vue]
+import { listData } from 'mock/list.js'
 
-    export default {
-      data() {
-        return {
-          list: listData
-        }
-      }
+export default {
+  data() {
+    return {
+      list: listData
     }
-    ```
+  }
+}
+```
 - 采用上述的方式去模拟数据，缺少接口所具备的状态，比如删除接口，有成功和失败的状态码，模拟删除，更新操作就很无力 <span class="font-bold">---></span> 通过Mock，实实在在的请求，修改对应的mock接口即可
 
 #### 3. Mock的几种方式和优缺点
@@ -69,21 +69,21 @@ Mock的方式 | 优缺点
 
 - Express路由相关，具体的见文档，这里不区分请求方法，直接app.use
 
-  ```js[index.js]
-  const express = require('express');
-  const app = express();
+```js[index.js]
+const express = require('express');
+const app = express();
 
-  // 这样一个简单的路由就完成了，请求到/ajax-get-info的请求就能拿到对应的JSON数据
-  app.use('/ajax-get-info', (req, res) => {
-    res.send({
-      "success": true,
-      "code": 0,
-      "data": {}
-    })  
-  });
+// 这样一个简单的路由就完成了，请求到/ajax-get-info的请求就能拿到对应的JSON数据
+app.use('/ajax-get-info', (req, res) => {
+  res.send({
+    "success": true,
+    "code": 0,
+    "data": {}
+  })  
+});
 
-  app.listen(3000, () => { console.log('server listen on port 3000') })
-  ```
+app.listen(3000, () => { console.log('server listen on port 3000') })
+```
 
 - 添加中间件，处理请求的query和body。利用body-parser来获取请求的payload，挂载在req.body上
 
@@ -93,87 +93,87 @@ Mock的方式 | 优缺点
 
   </alert>
 
-  ```js[index.js]
-  const express = require('express');
-  const bodyParser = require('body-parser');
+```js[index.js]
+const express = require('express');
+const bodyParser = require('body-parser');
 
-  // mock的路由
-  const mockRouter = express.Router();
-  
-  // 针对路由级别使用中间件
-  // express middleware bodyParser for mock server
-  // for parsing application/json
-  mockRouter.use(bodyParser.json());
-  // for parsing application/x-www-form-urlencoded
-  mockRouter.use(bodyParser.urlencoded({ extended: true }));
-  
-  // 使用mock路由，这里的api prefix 后续有作用
-  app.use('/mock', mockRouter);
+// mock的路由
+const mockRouter = express.Router();
 
-  // 添加路由业务逻辑
-  mockRouter.use('/ajax-get-info', (req, res) => {
-    // req.body可以获取到post request的payload
-    console.log(req.body);
-    
-    res.send({
-      "success": true,
-      "code": 0,
-      "data": {
-        name: req.body.name  
-      }
-    })
-  });
-  ```
+// 针对路由级别使用中间件
+// express middleware bodyParser for mock server
+// for parsing application/json
+mockRouter.use(bodyParser.json());
+// for parsing application/x-www-form-urlencoded
+mockRouter.use(bodyParser.urlencoded({ extended: true }));
+
+// 使用mock路由，这里的api prefix 后续有作用
+app.use('/mock', mockRouter);
+
+// 添加路由业务逻辑
+mockRouter.use('/ajax-get-info', (req, res) => {
+  // req.body可以获取到post request的payload
+  console.log(req.body);
+  
+  res.send({
+    "success": true,
+    "code": 0,
+    "data": {
+      name: req.body.name  
+    }
+  })
+});
+```
 
 - Mock级别的路由已经有了，接下来我们就要准备对应的路由和响应的callback了，添加一个mock文件夹，专门放置一些mock接口的文件，来设置请求的路由和针对路由的处理
 
-  <code-group>
-    <code-block label="index.js" active>
+<code-group>
+  <code-block label="index.js" active>
 
-    ```js
-    const path = require('path');
-    const mockDir = path.resolve(__dirname, './mock');
+  ```js
+  const path = require('path');
+  const mockDir = path.resolve(__dirname, './mock');
 
-    fs.readdirSync(mockDir).forEach(file => {
-        const mock = require(path.resolve(mockDir, file));
-        // 此处mockRouter就是上面Mock路由
-        mockRouter.use(mock.api, mock.response);
-    });
-    ```
+  fs.readdirSync(mockDir).forEach(file => {
+      const mock = require(path.resolve(mockDir, file));
+      // 此处mockRouter就是上面Mock路由
+      mockRouter.use(mock.api, mock.response);
+  });
+  ```
 
-    </code-block>
-    <code-block label="mock/test.js">
+  </code-block>
+  <code-block label="mock/test.js">
 
-    ```ts
-    // 每一个新的mock api都是一个结构类似的js文件
-    interface MockApi {
-      api: string,
-      response: () => void
-    }
+  ```ts
+  // 每一个新的mock api都是一个结构类似的js文件
+  interface MockApi {
+    api: string,
+    response: () => void
+  }
 
-    // 注意，由于是针对子路由级别的，前端业务调用的url为/mock/get-info
-    module.exports = {
-      api: '/get-info',
-      response: (req, res) => {
-        // 由于添加了body-parser中间件，所以可以解析传入的body，这里就可以用来动态的生成JSON
-        const flag = req.body.flag;
+  // 注意，由于是针对子路由级别的，前端业务调用的url为/mock/get-info
+  module.exports = {
+    api: '/get-info',
+    response: (req, res) => {
+      // 由于添加了body-parser中间件，所以可以解析传入的body，这里就可以用来动态的生成JSON
+      const flag = req.body.flag;
 
-        console.log(req.body);
+      console.log(req.body);
 
-        res.send(
-          {
-            success: flag,
-            code: 0,
-            data: [],
-            message: '获取信息成功',
-          },
-        );
-      },
-    };
-    ```
+      res.send(
+        {
+          success: flag,
+          code: 0,
+          data: [],
+          message: '获取信息成功',
+        },
+      );
+    },
+  };
+  ```
 
-    </code-block>
-  </code-group>
+  </code-block>
+</code-group>
 
 #### 2. VueCli 3.x的基本知识
 

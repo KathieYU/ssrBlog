@@ -22,13 +22,15 @@
 import Vue from 'vue'
 import { IContentDocument } from '@nuxt/content/types/content'
 
-const articleDirs = ['top']
+const articleDirs = ['top', 'vue']
 
 export default Vue.extend({
   async asyncData({ $content }) {
     const articleList = await Promise.all(
       articleDirs.map((dir) => $content(dir).fetch())
     )
+
+    console.log(articleList)
 
     return {
       top: (articleList[0] as Array<IContentDocument>)[0],
