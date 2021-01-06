@@ -1,7 +1,13 @@
 <template>
   <div
-    class="codesandbox w-full mb-6 mx-auto bg-black text-white text-3xl text-center flex items-center justify-center overflow-hidden rounded-md"
+    class="codesandbox relative w-full mb-6 mx-auto bg-black text-white text-3xl text-center flex items-center justify-center overflow-hidden rounded-md"
   >
+    <div
+      class="absolute top-4 right-4 px-4 py-1 bg-primary-500 rounded-md text-white text-base cursor-pointer hover:bg-primary-400"
+      @click="openCodeSandBox"
+    >
+      Open
+    </div>
     <iframe
       v-if="isIntersecting && src"
       :src="src"
@@ -48,6 +54,11 @@ export default {
       this.__observer.disconnect()
       delete this.__observer
     }
+  },
+  methods: {
+    openCodeSandBox() {
+      window.open(this.src)
+    },
   },
 }
 </script>

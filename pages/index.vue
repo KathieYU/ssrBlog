@@ -13,6 +13,8 @@
         :key="index"
         :article="art"
         mode="vertical"
+        class="block"
+        :class="{ 'md:hidden': index === 0 }"
       />
     </div>
   </div>
@@ -29,8 +31,6 @@ export default Vue.extend({
     const articleList = await Promise.all(
       articleDirs.map((dir) => $content(dir).fetch())
     )
-
-    console.log(articleList)
 
     return {
       top: (articleList[0] as Array<IContentDocument>)[0],
