@@ -21,7 +21,7 @@ Typescript通过添加类型去扩展了Javascript，帮助你在编译阶段就
 
 ## Typescript相关知识点
 
-该部分会针对TS各个部分的比较常用的点做一些介绍，并为后续的拜读Vue3 reactivity的实现（Vue3响应式的原理）做铺垫
+针对TS各个部分的比较常用的点做一些介绍，并为后续的拜读Vue3 reactivity的实现（Vue3响应式的原理）做铺垫
 
 #### 基础类型
 
@@ -52,13 +52,96 @@ Typescript通过添加类型去扩展了Javascript，帮助你在编译阶段就
       x;  // Function
     }
   }
+
+  let a: unknown
+
+  a = 1;
+
+  // 报错，a此时没有被明确定义为数字
+  a.toFixed()
+
+  // 利用类型断言可行
+  (<number>a).toFixed()
   ```
 
-#### 接口和类型别名的区别
+  <alert>
+  
+  在定义一些输入的时候，为了做到类型安全，尽量不用any，使用unknown配合类型保护和断言，做到类型安全
+  
+  </alert>
 
-interface接口和类型别名type的常用使用场景和区别
+- 如上提到的类型断言和类型保护是什么？
 
-- 如果你写过Java，在面向对象的语言中，接口（interface）是一个很重要的概念，它是对行为的抽象。接口在Ts中更加灵活，不仅可以对类的行为进行抽象，也常用语对象结构的描述
+  1. 类型断言，在某些情况下你别Ts更加确切的知道某个值的类型，你可以是用类型断言告诉编译器更加确切的类型
+
+      ```ts
+      let someValue:any = '字符串'
+
+      let strLength: number = (<string>someValue).length;
+      let strLength: number = (someValue as string).length;
+      ```
+  2. 类型保护，常见的场景是使用了联合类型，我们需要在代码中if else进入各自的逻辑执行，此时就需要知道每个分支类型情况
+
+      ```ts
+      interface Bird {
+        fly();
+        layEggs();
+      }
+
+      interface Fish {
+        swim();
+        layEggs();
+      }
+
+      // 返回的类型是两者之一
+      function getSmallPet(): Fish | Bird {
+        // ...
+      }
+
+      let pet = getSmallPet();
+
+      // 这么写Ts会报错，TS值知道pet的类型是Bird和Fish的联合类型
+      // 为了安全，只能使用共同的方法layEggs()
+      if (pet.swim) {
+        pet.swim();
+      } else {
+        pet.fly();
+      }
+
+      // fix one 使用类型断言
+      if ((<Fish>pet).swim) {
+        (<Fish>pet).swim();
+      } else {
+        (<Bird>pet).fly();
+      }
+
+      // fix two 自定义类型保护 pet is Fish 就可以起到这个作用
+      function isFish(pet: Fish | Bird): pet is Fish {
+        return (<Fish>pet).swim !== undefined
+      }
+
+      // 这样TS就能将变量在分支里具体的缩减为某个类型
+      if (isFish(pet)) {
+        pet.swim()
+      } else {
+        pet.fly()
+      }
+      ```
+
+      <alert type="warning">
+      
+      如果我们的联合类型是字符串和数字也要一一这样判断么？答案是否定的，在TS中typeof, instanceof这样的原生语法也能起到类型保护的作用，同时用于去除null和undefined使用短路运算符即可(xxx || 'default')
+
+      </alert>
+
+
+#### 接口和类型别名
+
+>TypeScript的核心原则之一是对值所具有的结构进行类型检查
+
+我们利用接口来定义对象的结构，算是一种自定义的类型，类型别名顾名思义就是给类型起个别的名字，它跟接口不同的是，它不是一种新的类型，只是类型的一种引用
+
+- 如果你写过Java，在面向对象的语言中，接口（interface）是一个很重要的概念，它是对行为的抽象。接口在Ts中更加灵活，不仅可以对类的行为进行抽象，也常用于对象结构的描述，接口自然可以被class实现（implements）和继承（extends）
   ```ts
   interface Person {
     name: string
@@ -78,13 +161,13 @@ interface接口和类型别名type的常用使用场景和区别
   person.sex = 1;
   ```
 
-- type会给类型起一种新的名字，作为引用这个类型命名使用，它无法extends和implements，在开发过程中，应该尽量使用interface代替type使用，如果无法通过接口来来描述一个类型的话，就尝试使用type
+- type会给类型起一种新的名字，作为引用这个类型使用，它无法extends和implements，在开发过程中，应该尽量使用interface代替type使用，如果无法通过接口来来描述一个类型的话，就尝试使用type
 
   ```ts
   // 这里我们需要把string和number生成一个联合类型无法使用interface去描述
   type NumberOrString = string | number
 
-  // 和交叉类型一起使用可以弄出链数据结构
+  // 和交叉类型一起使用可以弄出链数据结构，这里的T是泛型变量，稍后会讲到
   type LinkedList<T> = T & { next?: LinkedList<T> }
 
   interface Person {
@@ -98,7 +181,7 @@ interface接口和类型别名type的常用使用场景和区别
   var s = perple.next.next.name;
   ```
 
-- type也可以常用语映射类型，比如把一个接口描述的类型属性转成可选或者属性
+- type也可以常用于映射类型，比如把一个接口描述的类型属性转成可选或者只读属性
   ```ts
   type Readonly<T> = {
     readonly [K in keyof T]: T[K]
@@ -111,13 +194,62 @@ interface接口和类型别名type的常用使用场景和区别
 
   type ReadOnlyPerson = Readonly<Person>
 
-  //type ReadOnlyPerson = {
+  // type ReadOnlyPerson = {
   //  readonly name: string
   //  readonly age: number
-  //}
+  // }
   ```
 
+  <alert>
+  
+  TS内置了一些工具类型，快速的使用一种类型生成另外一种类型，常用于修改第三方库的类型声明，常见的Partial<Type>，利用Type生成一个所有属性都为可选的新类型，Pick<Type, Key>挑选Types中的KEY作为新的类型，ReturnType<Type>等，[TS工具类型大全](https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype)
+  
+  </alert>
+
 #### 泛型
+
+同样接触过JAVA的小伙伴们，对泛型应该很熟悉，利用它能创建可重用的组件，利用泛型和TS的类型推论，我们能定义出更通用的组件
+
+```ts
+// 那么这个函数就是用来给number类型使用的
+function identity(arg: number): number {
+  return arg;
+}
+
+// 如果是string类型的
+function identity(arg: string): string {
+  return arg;
+}
+
+// 这个时候，我们就需要一种类型变量T来帮我们保持函数的入参和返回值类型一致
+function identity<T>(arg: T): T {
+  return arg
+}
+```
+
+可以利用泛型变量来实现一些工具函数，比如常见的extend，用来实现对象的mixins
+
+```ts
+// 这里泛型变量配合着TS自己的类型推论能够很好的帮助我们获取到通用的对象混合后的Type
+function extend<T, U>(first: T, second: U): T & U {
+  const result = <T & U>{}
+
+  for (let id in first) {
+    (<any>result)[id] = (<any>first)[id];
+  }
+  for (let id in second) {
+    if (!(<any>result).hasOwnProperty(id)) {
+      (<any>result)[id] = (<any>second)[id];
+    }
+  }
+  
+  return result;
+}
+```
+
+泛型的内容比较多，具体的场景在后续的Vue3的reactivity的解读中再提及
+
+[infer](https://segmentfault.com/a/1190000018514540?utm_source=tag-newest)
 
 
 
