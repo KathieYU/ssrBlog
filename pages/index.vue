@@ -24,7 +24,7 @@
 import Vue from 'vue'
 import { IContentDocument } from '@nuxt/content/types/content'
 
-const articleDirs = ['top', 'vue']
+const articleDirs = ['top', 'vue', 'typescript']
 
 export default Vue.extend({
   async asyncData({ $content }) {
