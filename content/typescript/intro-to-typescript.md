@@ -1,5 +1,5 @@
 ---
-title: Typescript
+title: Typescript使用记录
 description: Typescript是Javascript类型的超集，它可以编译为纯Javascript，让Js这门弱类型语言也能像Java一样做到类型安全。
 image: http://static.journeynes.com/blog/blog4-1.jpeg
 tag: Typescript
@@ -202,7 +202,7 @@ Typescript通过添加类型去扩展了Javascript，帮助你在编译阶段就
 
   <alert>
   
-  TS内置了一些工具类型，快速的使用一种类型生成另外一种类型，常用于修改第三方库的类型声明，常见的Partial<Type>，利用Type生成一个所有属性都为可选的新类型，Pick<Type, Key>挑选Types中的KEY作为新的类型，ReturnType<Type>等，[TS工具类型大全](https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype)
+  TS内置了一些工具类型，快速的使用一种类型生成另外一种类型，常用于修改第三方库的类型声明，常见的Partial\<Type\>，利用Type生成一个所有属性都为可选的新类型，Pick\<Type, Key\>挑选Types中的KEY作为新的类型，ReturnType\<Type\>等，[TS工具类型大全](https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype)
   
   </alert>
 
@@ -221,13 +221,13 @@ function identity(arg: string): string {
   return arg;
 }
 
-// 这个时候，我们就需要一种类型变量T来帮我们保持函数的入参和返回值类型一致
+// 这个时候，我们就需要一种泛型变量T来帮我们保持函数的入参和返回值类型一致
 function identity<T>(arg: T): T {
   return arg
 }
 ```
 
-可以利用泛型变量来实现一些工具函数，比如常见的extend，用来实现对象的mixins
+可以利用泛型变量来实现一些工具函数，比如常见的extend和getProperty
 
 ```ts
 // 这里泛型变量配合着TS自己的类型推论能够很好的帮助我们获取到通用的对象混合后的Type
@@ -235,21 +235,87 @@ function extend<T, U>(first: T, second: U): T & U {
   const result = <T & U>{}
 
   for (let id in first) {
-    (<any>result)[id] = (<any>first)[id];
+    result[id] = (<any>first)[id];
   }
   for (let id in second) {
     if (!(<any>result).hasOwnProperty(id)) {
-      (<any>result)[id] = (<any>second)[id];
+      result[id] = (<any>second)[id];
     }
   }
   
   return result;
 }
+
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key]
+}
+
+// Error TS类型推断发现a并不存在与第一个对象中
+getProperty({ id: 1 }, 'a')
+// Right
+getProperty({ id: 1 }, 'id')
 ```
 
 泛型的内容比较多，具体的场景在后续的Vue3的reactivity的解读中再提及
 
-[infer](https://segmentfault.com/a/1190000018514540?utm_source=tag-newest)
+#### infer操作符
+
+infer表示在extends条件语句中待推断的变量类型，在[TS2.8](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html#type-inference-in-conditional-types)版本中可以看到相关内容
+
+下面的例子来源于TS2.8新增的预定义条件类型RetrunType\<T\>，用于推断函数返回值类型
+
+```ts
+// 自己实现RetrunType<T>
+type RetrunType<T> = T extends (..args: any[]) => infer R ? R : any;
+
+type T0 = ReturnType<() => string> // string；
+```
+
+利用infer可行的骚操作
+
+- tuple转union，比如[string, number] -> string | number
+
+  ```ts
+  type TupleToUnion<T> = T extends Array<infer R> ? R : never
+
+  type Tuple = [number, string]
+
+  type T1 = TupleToUnion<Tuple> // number | string
+
+  // 或者直接利用索引类型
+  type T2 = Tuple[number] // number | string
+  ```
+
+- union转intersection，比如string | number -> string & number
+  ```ts
+  type X<T> = T extends { a: (x: infer U) => void, b: (x: infer U) => void } ? U : never;
+  interface One {
+    name: string,
+    age: number
+  }
+  interface Two {
+    name: string
+    adress: string
+  }
+  // 逆变位置上，同一类型变量的多个候选类型将被推断为交叉类型，也就是infer U在逆变位置，被推断为One & Two交叉类型
+  type T3 = X<{ a: (x: One) => void, b: (x: Two) => void }> // One & Two
+
+  // 接着只要让联合类型转成X类型的构造即可
+  type UnionToIntersection<T> = (T extends any ? (k: T) => void : never) extends ((k: infer I) => void) ? I : never
+  type T4 = UnionToIntersection<One | Two>
+  ```
+
+  <alert>
+  
+  这里利用到了两个概念，[分布式条件类型](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html#distributive-conditional-types)和[逆变协变](https://jkchao.github.io/typescript-book-chinese/tips/covarianceAndContravariance.html)的概念，可自行学习
+
+  </alert>
+
+这些奇技淫巧其实大家知道即可，不必话过多的时间在这个上面，只要知道infer操作符可以在extends条件类型中，作为一种待推断的类型变量即可，在谈到Vue3的reactivity部分也有使用到
+
+## 总结
+
+Typescript是Javascript的超集，通过添加类型在编译阶段可以发现程序可能出现的错误，让程序更加健壮，但同时也会增加很多学习成本，并且在团队开发能力不同的时候，反而起不到TS原本的作用，变为AnyScript。学习TS是一个持续的过程，希望大家一起进步
 
 
 
