@@ -15,7 +15,7 @@ module.exports = {
       'nuxt.config.js',
     ],
     options: {
-      whitelist: ['dark-mode'],
+      // whitelist: ['dark-mode'],
     },
   },
   darkMode: 'class', // or 'media' or 'class'

@@ -3,6 +3,7 @@ title: VueCli 3.x中集成Mock Api
 description: VueCli3.0，Nodejs，Express，Webpack相关配合脚手架完成Api的Mock
 image: http://static.journeynes.com/ssr-blog/blog1-1.jpg
 tag: Webpack,VueCli,Node,Express
+time: 2020/12/23
 ---
 
 ## 使用场景

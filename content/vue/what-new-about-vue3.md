@@ -3,6 +3,7 @@ title: Vue3.x的那些事儿
 description: Vue3从alpha到现在的稳定版本已经经历了1年多了，Vue3.x的配套核心类库vue-router@4和vuex@next也已经出炉，来一起了解学习一下Vue3.x的新特性吧
 image: http://static.journeynes.com/blog/blog3-1.jpeg
 tag: Vue3,VueRouter,Vuex,Typescript
+time: 2021/1/5
 apiList:
   - 值类型的响应式数据声明Ref
   - 引用类型的响应式数据声明Reactive

@@ -22,7 +22,7 @@
           {{ article.author || 'Journey' }}
         </p>
         <p class="text-xs text-gray-400 dark:text-gray-300">
-          {{ new Date(article.createdAt).toLocaleDateString() }}
+          {{ new Date(article.time).toLocaleDateString() }}
         </p>
       </div>
     </div>

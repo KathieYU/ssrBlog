@@ -3,6 +3,7 @@ title: Typescript使用记录
 description: Typescript是Javascript类型的超集，它可以编译为纯Javascript，让Js这门弱类型语言也能像Java一样做到类型安全。
 image: http://static.journeynes.com/blog/blog4-1.jpeg
 tag: Typescript
+time: 2020/1/7
 ---
 
 ## 什么是typescript

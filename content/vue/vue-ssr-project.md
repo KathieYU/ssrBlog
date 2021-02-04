@@ -3,6 +3,7 @@ title: VUE SSR初探
 description: VUE SSR是什么？它和传统的SPA的区别又是什么？来一起康一康
 image: http://static.journeynes.com/ssr-blog/blog2-1.jpg
 tag: Webpack,Vue,SSR,Nuxt
+time: 2020/12/30
 disabled: true
 dataFetch:
   - 客户端和服务端对数据获取的同构方案可以通过给组件添加静态asyncData方法来获取
